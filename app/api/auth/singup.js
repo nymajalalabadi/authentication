@@ -19,17 +19,17 @@ export default async function handler(req, res) {
 
     const existingUser = await db.collection('users').findOne({ email: email });
     if (existingUser) {
+        res.status(422).json({ message: 'User already exists.' });
         client.close();
-        return res.status(422).json({ message: 'User already exists.' });
+        return;
     }
 
     const hashedPassword = await hashPassword(password);
 
     const result = await db.collection('users').insertOne({ email: email, password: hashedPassword });
 
-    client.close();
-
     res.status(201).json({ message: 'Signed up successfully', userId: result.insertedId });
+    client.close();
   }
   res.status(200).json({ message: 'Signup successful' });
 }
