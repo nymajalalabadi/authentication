@@ -5,6 +5,10 @@ import { useSession, signOut } from 'next-auth/react';
 export default function MainNavigation() {
   const { data: session, status } = useSession();
 
+
+  function logoutHandler() {
+    signOut();
+  }
   
 
   return (
@@ -26,7 +30,7 @@ export default function MainNavigation() {
           )}
           {session && status === 'authenticated' && (
             <li>
-              <button onClick={() => signOut()}>Logout</button>
+              <button onClick={logoutHandler}>Logout</button>
             </li>
           )}
         </ul>
