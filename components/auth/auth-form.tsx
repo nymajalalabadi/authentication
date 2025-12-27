@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import classes from './auth-form.module.css';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 async function createUser(email: string, password: string) {
   const result = await fetch('/api/auth/singup', {
@@ -25,6 +27,8 @@ export default function AuthForm() {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
+  const router = useRouter();
+  
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
   
@@ -34,8 +38,19 @@ export default function AuthForm() {
 
 
     if (isLogin) {
-      // Login
-    } else {
+        const result = await signIn('credentials', {
+          redirect: false,
+          email: email,
+          password: password,
+        });
+
+        if (!result?.error) {
+          // set session cookie
+          router.push('/profile');
+        }
+        console.log(result);
+      } 
+    else {
       try {
         const data = await createUser(email, password);
         console.log(data);
