@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import classes from './main-navigation.module.css';
 import { useSession, signOut } from 'next-auth/react';

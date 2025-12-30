@@ -18,14 +18,14 @@ export default NextAuth({
                 const client = await connectToDatabase();
                 const db = client.db('authentication');
 
-                const user = await db.collection('users').findOne({ email: credentials?.email });
+                const user = await db.collection('users').findOne({ email: credentials.email });
 
                 if (!user) {
                     client.close();
                     throw new Error('No user found');
                 }
 
-                const passwordsMatch = await verifyPassword(credentials!.password, user.password);
+                const passwordsMatch = await verifyPassword(credentials.password, user.password);
                 if (!passwordsMatch) {
                     client.close();
                     throw new Error('Invalid password');

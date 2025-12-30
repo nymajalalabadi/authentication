@@ -2,6 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+1. Copy the environment file:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. Update `.env.local` with your actual values:
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `NEXTAUTH_SECRET`: A secure random string for NextAuth
+   - `NEXTAUTH_URL`: Your application URL (http://localhost:3000 for development)
+
+3. Make sure MongoDB is running on your system.
+
 First, run the development server:
 
 ```bash

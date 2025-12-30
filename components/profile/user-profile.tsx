@@ -1,3 +1,5 @@
+"use client";
+
 import classes from './user-profile.module.css';
 import ProfileForm from './profile-form';
 import { useSession, getSession } from 'next-auth/react';

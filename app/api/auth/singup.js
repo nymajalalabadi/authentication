@@ -1,5 +1,5 @@
 import { connectToDatabase } from '@/lib/db';
-import { verifyPassword } from '@/lib/auth';
+import { hashPassword } from '@/lib/auth';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -30,6 +30,7 @@ export default async function handler(req, res) {
 
     res.status(201).json({ message: 'Signed up successfully', userId: result.insertedId });
     client.close();
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
   }
-  res.status(200).json({ message: 'Signup successful' });
 }
