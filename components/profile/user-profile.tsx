@@ -31,10 +31,23 @@ export default function UserProfile() {
     return <p>Access Denied</p>;
   }
 
+  async function onChangePassword(data: { newPassword: string, oldPassword: string }) {
+    const result = await fetch('/api/user/change-password', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const resultData = await result.json();
+    console.log(resultData);
+  }
+
   return (
     <section className={classes.profile}>
       <h1>Your User Profile</h1>
-      <ProfileForm />
+      <ProfileForm onChangePassword={onChangePassword} />
     </section>
   );
 }
