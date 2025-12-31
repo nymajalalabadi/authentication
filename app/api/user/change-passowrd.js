@@ -12,25 +12,31 @@ export async function handler(req, res) {
     return res.status(401).json({ message: 'Authentication failed' });
   }
 
-  const { oldPassword, newPassword } = await req.json();
+  const email = session.user.email;
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
 
   const client = await connectToDatabase();
   const db = client.db('authentication');
 
-  const user = await db.collection('users').findOne({ email: session.user.email });
+  const user = await db.collection('users').findOne({ email: email });
 
   if (!user) {
+    client.close();
     return res.status(404).json({ message: 'User not found' });
   }
 
   const passwordsMatch = await verifyPassword(oldPassword, user.password);
+  
   if (!passwordsMatch) {
+    client.close();
     return res.status(403).json({ message: 'Invalid password' });
   }
 
   const hashedPassword = await hashPassword(newPassword);
+
   await db.collection('users').updateOne(
-    { email: session.user.email },
+    { email: email },
     { $set: { password: hashedPassword } }
   );
 
